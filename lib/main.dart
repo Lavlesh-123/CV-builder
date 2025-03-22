@@ -143,10 +143,8 @@ Future<void> generateResume() async {
   final pdf = pw.Document();
 
   // Load an image (Profile Picture)
-  // final ByteData data = await rootBundle.load('assets/images/resume_splash_final.png');
   final profileImage = await rootBundle.load('assets/images/lavlesh.jpeg').then((data) => data.buffer.asUint8List());
 
-  // final Uint8List profileImage = data.buffer.asUint8List();
 
   pdf.addPage(
     pw.Page(
