@@ -5,10 +5,11 @@ buildscript {
         mavenCentral()
     }
 
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.0'
-        classpath"com.google.gms.google-services:com.google.gms.google-services.gradle.plugin:4.3.15"
+       dependencies {
+        // Re-add these lines if you're using Google services or Kotlin
+        classpath 'com.android.tools.build:gradle:8.1.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.3.15'
     }
 }
 

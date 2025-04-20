@@ -7,7 +7,6 @@ import 'LoginPage.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
-
   @override
   State<Splash> createState() => _SplashState();
 }
@@ -18,7 +17,6 @@ var user = auth.currentUser;
 class _SplashState extends State<Splash> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     if (user != null) {
       Timer(const Duration(seconds: 3), () {
@@ -39,7 +37,7 @@ class _SplashState extends State<Splash> {
       body: SizedBox(
         height: 550,
         width: 450,
-        child: Image.asset('assets/resume splash final 1.png',
+        child: Image.asset('assets/images/resume_splash_final.png',
             fit: BoxFit.contain),
       ),
     );

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:resume_builder/Screens/Education.dart';
-import 'package:resume_builder/Screens/Experience.dart';
 import 'package:resume_builder/Screens/Skills.dart';
 import 'package:resume_builder/Screens/pdf_screen.dart';
 import 'package:resume_builder/Screens/personal%20details.dart';
 import 'package:resume_builder/utils/list.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'objective.dart';
 
@@ -29,7 +27,7 @@ class _profileState extends State<profile> {
           ),
         ),
         body: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
@@ -94,20 +92,20 @@ class _profileState extends State<profile> {
                       child: InkWell(
                         onTap: () {
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => PdfPage()));
+                              MaterialPageRoute(builder: (context) => const PdfPage()));
                         },
                         child: Container(
                           height: 80,
                           width: double.infinity,
                           decoration: BoxDecoration(
-                              gradient: LinearGradient(
+                              gradient: const LinearGradient(
                                   begin:Alignment.centerLeft,
                                   end: Alignment.centerRight,
                                   colors: [Colors.purpleAccent,Colors.lightBlueAccent]
                               ),
                               color: Colors.blue,
                               borderRadius: BorderRadius.circular(15)),
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               'View Pdf',
                               style: TextStyle(

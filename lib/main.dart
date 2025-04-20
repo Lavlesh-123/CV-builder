@@ -1,317 +1,316 @@
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:flutter/material.dart';
-// import 'package:resume_builder/Screens/LoginPage.dart';
-// import 'package:resume_builder/Screens/Splash.dart';
-
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   await Firebase.initializeApp();
-//   // FirebaseMessaging.onBackgroundMessage(_firebaseMessaginngBankgroundHandler);
-//   runApp(const MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       title: 'Flutter Demo',
-//       theme: ThemeData(
-//       primarySwatch: Colors.blue
-//           ),
-//       home: const login(),
-//     );
-//   }
-// }
-
-import 'package:flutter/foundation.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:get/get.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:path_provider/path_provider.dart';
-import 'package:open_filex/open_filex.dart';
-import 'package:printing/printing.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
+import 'package:resume_builder/Screens/Splash.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessaginngBankgroundHandler);
   runApp(const MyApp());
-}
-
-class ResumeController extends GetxController {
-  var name = ''.obs;
-  var email = ''.obs;
-  var phone = ''.obs;
-  var experience = ''.obs;
-  var selectedTemplate = 0.obs;
-  var imagePath = ''.obs;
-
-  void updateTemplate(int index) {
-    selectedTemplate.value = index;
-  }
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ResumeForm(),
+      theme: ThemeData(
+      primarySwatch: Colors.blue
+          ),
+      home: const Splash(),
     );
   }
 }
 
-class ResumeForm extends StatelessWidget {
-  final ResumeController controller = Get.put(ResumeController());
-  final nameController = TextEditingController();
-  final emailController = TextEditingController();
-  final phoneController = TextEditingController();
-  final experienceController = TextEditingController();
+// import 'package:flutter/foundation.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter/services.dart';
+// import 'package:get/get.dart';
+// import 'package:pdf/pdf.dart';
+// import 'package:pdf/widgets.dart' as pw;
+// import 'package:path_provider/path_provider.dart';
+// import 'package:open_filex/open_filex.dart';
+// import 'package:printing/printing.dart';
+// import 'package:resume_builder/Screens/Splash.dart';
+// import 'package:share_plus/share_plus.dart';
+// import 'package:image_picker/image_picker.dart';
+// import 'dart:io';
 
-  ResumeForm({super.key});
+// void main() {
+//   runApp(const MyApp());
+// }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Resume Builder')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: nameController,
-              decoration: const InputDecoration(labelText: 'Full Name'),
-              onChanged: (val) => controller.name.value = val,
-            ),
-            TextField(
-              controller: emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-              onChanged: (val) => controller.email.value = val,
-            ),
-            TextField(
-              controller: phoneController,
-              decoration: const InputDecoration(labelText: 'Phone'),
-              onChanged: (val) => controller.phone.value = val,
-            ),
-            TextField(
-              controller: experienceController,
-              decoration: const InputDecoration(labelText: 'Experience'),
-              onChanged: (val) => controller.experience.value = val,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => Get.to(TemplateSelection()),
-              child: const Text('Choose Template'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: pickImage,
-              child: const Text('Select Profile Photo'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: (){
-                generateResume();
-              },
-              child: const Text('Generate PDF'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+// class ResumeController extends GetxController {
+//   var name = ''.obs;
+//   var email = ''.obs;
+//   var phone = ''.obs;
+//   var experience = ''.obs;
+//   var selectedTemplate = 0.obs;
+//   var imagePath = ''.obs;
 
-  Future<void> pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+//   void updateTemplate(int index) {
+//     selectedTemplate.value = index;
+//   }
+// }
 
-    if (pickedFile != null) {
-      controller.imagePath.value = pickedFile.path;
-    }
-  }
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
 
+//   @override
+//   Widget build(BuildContext context) {
+//     return const GetMaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: Splash(),
+//     );
+//   }
+// }
 
-Future<void> generateResume() async {
-  final pdf = pw.Document();
+// class ResumeForm extends StatelessWidget {
+//   final ResumeController controller = Get.put(ResumeController());
+//   final nameController = TextEditingController();
+//   final emailController = TextEditingController();
+//   final phoneController = TextEditingController();
+//   final experienceController = TextEditingController();
 
-  // Load an image (Profile Picture)
-  final profileImage = await rootBundle.load('assets/images/lavlesh.jpeg').then((data) => data.buffer.asUint8List());
+//   ResumeForm({super.key});
 
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: const Text('Resume Builder')),
+//       body: Padding(
+//         padding: const EdgeInsets.all(16.0),
+//         child: Column(
+//           children: [
+//             TextField(
+//               controller: nameController,
+//               decoration: const InputDecoration(labelText: 'Full Name'),
+//               onChanged: (val) => controller.name.value = val,
+//             ),
+//             TextField(
+//               controller: emailController,
+//               decoration: const InputDecoration(labelText: 'Email'),
+//               onChanged: (val) => controller.email.value = val,
+//             ),
+//             TextField(
+//               controller: phoneController,
+//               decoration: const InputDecoration(labelText: 'Phone'),
+//               onChanged: (val) => controller.phone.value = val,
+//             ),
+//             TextField(
+//               controller: experienceController,
+//               decoration: const InputDecoration(labelText: 'Experience'),
+//               onChanged: (val) => controller.experience.value = val,
+//             ),
+//             const SizedBox(height: 20),
+//             ElevatedButton(
+//               onPressed: () => Get.to(TemplateSelection()),
+//               child: const Text('Choose Template'),
+//             ),
+//             const SizedBox(height: 20),
+//             ElevatedButton(
+//               onPressed: pickImage,
+//               child: const Text('Select Profile Photo'),
+//             ),
+//             const SizedBox(height: 20),
+//             ElevatedButton(
+//               onPressed: (){
+//                 generateResume();
+//               },
+//               child: const Text('Generate PDF'),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
 
-  pdf.addPage(
-    pw.Page(
-      pageFormat: PdfPageFormat.a4,
-      build: (pw.Context context) {
-        return pw.Column(
-          crossAxisAlignment: pw.CrossAxisAlignment.start,
-          children: [
-            // Header Section
-            pw.Row(
-              children: [
-                pw.Container(
-                  width: 80,
-                  height: 80,
-                  decoration: pw.BoxDecoration(
-                    shape: pw.BoxShape.circle,
-                    image: pw.DecorationImage(
-                      image: pw.MemoryImage(profileImage),
-                      fit: pw.BoxFit.cover,
-                    ),
-                  ),
-                ),
-                pw.SizedBox(width: 20),
-                pw.Column(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    pw.Text("Lavlesh Kumar", style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
-                    pw.Text("Flutter Developer", style: pw.TextStyle(fontSize: 18)),
-                    pw.Text("lavleshkumr1234@gmail.com"),
-                    pw.Text("+91 9651495748"),
-                  ],
-                ),
-              ],
-            ),
-            pw.SizedBox(height: 20),
+//   Future<void> pickImage() async {
+//     final picker = ImagePicker();
+//     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
-            // Experience Section
-            pw.Text("EXPERIENCE", style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold)),
-            pw.SizedBox(height: 5),
-            pw.Text("12/11/2022 - 12/11/2019"),
-            pw.Text("MendZone | WisiPay"),
-            pw.Text(
-              "Worked as a Flutter Developer, built applications with GetX state management, integrated Firebase for authentication, and designed UI/UX components.",
-              textAlign: pw.TextAlign.justify,
-            ),
-
-            // Add more sections like Education, Skills, Projects, etc.
-          ],
-        );
-      },
-    ),
-  );
-
-  // Save PDF to Device
-  final output = await getTemporaryDirectory();
-  final file = File("${output.path}/resume.pdf");
-  await file.writeAsBytes(await pdf.save());
-
-  // Print Preview
-  await Printing.layoutPdf(
-    onLayout: (PdfPageFormat format) async => pdf.save(),
-  );
-}
+//     if (pickedFile != null) {
+//       controller.imagePath.value = pickedFile.path;
+//     }
+//   }
 
 
-  pw.Widget defaultTemplate(pw.ImageProvider? image) {
-    return pw.Column(
-      children: [
-        if (image != null) pw.Image(image, width: 100, height: 100),
-        pw.Text(controller.name.value,
-            style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
-        pw.Divider(),
-        pw.Text(controller.email.value),
-        pw.Text(controller.phone.value),
-        pw.Text('Experience: ${controller.experience.value}'),
-      ],
-    );
-  }
+// Future<void> generateResume() async {
+//   final pdf = pw.Document();
 
-  pw.Widget templateOne(pw.ImageProvider? image) {
-    return pw.Container(
-      decoration: const pw.BoxDecoration(color: PdfColors.blue100),
-      padding: const pw.EdgeInsets.all(10),
-      child: pw.Column(
-        children: [
-          if (image != null) pw.Image(image, width: 100, height: 100),
-          pw.Text(controller.name.value,
-              style: pw.TextStyle(
-                  fontSize: 26,
-                  fontWeight: pw.FontWeight.bold,
-                  color: PdfColors.blue800)),
-          pw.SizedBox(height: 5),
-          pw.Text(controller.email.value,
-              style: const pw.TextStyle(color: PdfColors.blue700)),
-          pw.Text(controller.phone.value,
-              style: const pw.TextStyle(color: PdfColors.blue700)),
-          pw.SizedBox(height: 10),
-          pw.Text('Experience: ${controller.experience.value}',
-              style: const pw.TextStyle(fontSize: 18)),
-        ],
-      ),
-    );
-  }
+//   // Load an image (Profile Picture)
+//   final profileImage = await rootBundle.load('assets/images/lavlesh.jpeg').then((data) => data.buffer.asUint8List());
 
-  pw.Widget templateTwo(pw.ImageProvider? image) {
-    return pw.Container(
-      decoration: const pw.BoxDecoration(color: PdfColors.green100),
-      padding: const pw.EdgeInsets.all(10),
-      child: pw.Column(
-        children: [
-          if (image != null) pw.Image(image, width: 100, height: 100),
-          pw.Text(controller.name.value,
-              style: pw.TextStyle(
-                  fontSize: 26,
-                  fontWeight: pw.FontWeight.bold,
-                  color: PdfColors.green800)),
-          pw.SizedBox(height: 5),
-          pw.Text(controller.email.value,
-              style: const pw.TextStyle(color: PdfColors.green700)),
-          pw.Text(controller.phone.value,
-              style: const pw.TextStyle(color: PdfColors.green700)),
-          pw.SizedBox(height: 10),
-          pw.Text('Experience: ${controller.experience.value}',
-              style: const pw.TextStyle(fontSize: 18)),
-        ],
-      ),
-    );
-  }
-}
 
-class TemplateSelection extends StatelessWidget {
-  final ResumeController controller = Get.find();
+//   pdf.addPage(
+//     pw.Page(
+//       pageFormat: PdfPageFormat.a4,
+//       build: (pw.Context context) {
+//         return pw.Column(
+//           crossAxisAlignment: pw.CrossAxisAlignment.start,
+//           children: [
+//             // Header Section
+//             pw.Row(
+//               children: [
+//                 pw.Container(
+//                   width: 80,
+//                   height: 80,
+//                   decoration: pw.BoxDecoration(
+//                     shape: pw.BoxShape.circle,
+//                     image: pw.DecorationImage(
+//                       image: pw.MemoryImage(profileImage),
+//                       fit: pw.BoxFit.cover,
+//                     ),
+//                   ),
+//                 ),
+//                 pw.SizedBox(width: 20),
+//                 pw.Column(
+//                   crossAxisAlignment: pw.CrossAxisAlignment.start,
+//                   children: [
+//                     pw.Text("Lavlesh Kumar", style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
+//                     pw.Text("Flutter Developer", style: const pw.TextStyle(fontSize: 18)),
+//                     pw.Text("lavleshkumr1234@gmail.com"),
+//                     pw.Text("+91 9651495748"),
+//                   ],
+//                 ),
+//               ],
+//             ),
+//             pw.SizedBox(height: 20),
 
-  TemplateSelection({super.key});
+//             // Experience Section
+//             pw.Text("EXPERIENCE", style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold)),
+//             pw.SizedBox(height: 5),
+//             pw.Text("12/11/2022 - 12/11/2019"),
+//             pw.Text("MendZone | WisiPay"),
+//             pw.Text(
+//               "Worked as a Flutter Developer, built applications with GetX state management, integrated Firebase for authentication, and designed UI/UX components.",
+//               textAlign: pw.TextAlign.justify,
+//             ),
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Select Template')),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(10),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 2,
-        ),
-        itemCount: 3,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              controller.updateTemplate(index);
-              Get.back();
-            },
-            child: Card(
-              color: controller.selectedTemplate.value == index
-                  ? Colors.blueAccent
-                  : Colors.white,
-              child: Center(
-                child: Text('Template ${index + 1}',
-                    style: const TextStyle(fontSize: 18)),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
+//             // Add more sections like Education, Skills, Projects, etc.
+//           ],
+//         );
+//       },
+//     ),
+//   );
+
+//   // Save PDF to Device
+//   final output = await getTemporaryDirectory();
+//   final file = File("${output.path}/resume.pdf");
+//   await file.writeAsBytes(await pdf.save());
+
+//   // Print Preview
+//   await Printing.layoutPdf(
+//     onLayout: (PdfPageFormat format) async => pdf.save(),
+//   );
+// }
+
+
+//   pw.Widget defaultTemplate(pw.ImageProvider? image) {
+//     return pw.Column(
+//       children: [
+//         if (image != null) pw.Image(image, width: 100, height: 100),
+//         pw.Text(controller.name.value,
+//             style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
+//         pw.Divider(),
+//         pw.Text(controller.email.value),
+//         pw.Text(controller.phone.value),
+//         pw.Text('Experience: ${controller.experience.value}'),
+//       ],
+//     );
+//   }
+
+//   pw.Widget templateOne(pw.ImageProvider? image) {
+//     return pw.Container(
+//       decoration: const pw.BoxDecoration(color: PdfColors.blue100),
+//       padding: const pw.EdgeInsets.all(10),
+//       child: pw.Column(
+//         children: [
+//           if (image != null) pw.Image(image, width: 100, height: 100),
+//           pw.Text(controller.name.value,
+//               style: pw.TextStyle(
+//                   fontSize: 26,
+//                   fontWeight: pw.FontWeight.bold,
+//                   color: PdfColors.blue800)),
+//           pw.SizedBox(height: 5),
+//           pw.Text(controller.email.value,
+//               style: const pw.TextStyle(color: PdfColors.blue700)),
+//           pw.Text(controller.phone.value,
+//               style: const pw.TextStyle(color: PdfColors.blue700)),
+//           pw.SizedBox(height: 10),
+//           pw.Text('Experience: ${controller.experience.value}',
+//               style: const pw.TextStyle(fontSize: 18)),
+//         ],
+//       ),
+//     );
+//   }
+
+//   pw.Widget templateTwo(pw.ImageProvider? image) {
+//     return pw.Container(
+//       decoration: const pw.BoxDecoration(color: PdfColors.green100),
+//       padding: const pw.EdgeInsets.all(10),
+//       child: pw.Column(
+//         children: [
+//           if (image != null) pw.Image(image, width: 100, height: 100),
+//           pw.Text(controller.name.value,
+//               style: pw.TextStyle(
+//                   fontSize: 26,
+//                   fontWeight: pw.FontWeight.bold,
+//                   color: PdfColors.green800)),
+//           pw.SizedBox(height: 5),
+//           pw.Text(controller.email.value,
+//               style: const pw.TextStyle(color: PdfColors.green700)),
+//           pw.Text(controller.phone.value,
+//               style: const pw.TextStyle(color: PdfColors.green700)),
+//           pw.SizedBox(height: 10),
+//           pw.Text('Experience: ${controller.experience.value}',
+//               style: const pw.TextStyle(fontSize: 18)),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// class TemplateSelection extends StatelessWidget {
+//   final ResumeController controller = Get.find();
+
+//   TemplateSelection({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: const Text('Select Template')),
+//       body: GridView.builder(
+//         padding: const EdgeInsets.all(10),
+//         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+//           crossAxisCount: 2,
+//           childAspectRatio: 2,
+//         ),
+//         itemCount: 3,
+//         itemBuilder: (context, index) {
+//           return GestureDetector(
+//             onTap: () {
+//               controller.updateTemplate(index);
+//               Get.back();
+//             },
+//             child: Card(
+//               color: controller.selectedTemplate.value == index
+//                   ? Colors.blueAccent
+//                   : Colors.white,
+//               child: Center(
+//                 child: Text('Template ${index + 1}',
+//                     style: const TextStyle(fontSize: 18)),
+//               ),
+//             ),
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }
 
 
 // import 'dart:developer';

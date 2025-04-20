@@ -37,7 +37,7 @@ class _PdfPageState extends State<PdfPage> {
     ];
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flutter pdf'),
+        title: const Text('Resume'),
       ),
       body: PdfPreview(
         maxPageWidth: 600,

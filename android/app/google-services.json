@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "620865606471",
-    "project_id": "resume-builder-f93cb",
-    "storage_bucket": "resume-builder-f93cb.appspot.com"
+    "project_number": "826523283161",
+    "project_id": "resume-app-34e6c",
+    "storage_bucket": "resume-app-34e6c.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:620865606471:android:c415594d180a29a0467262",
+        "mobilesdk_app_id": "1:826523283161:android:ef31c49b904c1e9b5a98c8",
         "android_client_info": {
-          "package_name": "com.example.resume_builder"
+          "package_name": "com.MyApp.resume_builder"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "620865606471-f9lchk72h2d5npe0grj0ckntt184t5na.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAQvyBeQyt5dJ7msJdBsH-29oEzxWuaxTU"
+          "current_key": "AIzaSyDu8n0Y-1mRd_V6hkpVH8iCK4o-LQx4C1w"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "620865606471-f9lchk72h2d5npe0grj0ckntt184t5na.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

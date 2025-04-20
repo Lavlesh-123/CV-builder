@@ -7,7 +7,6 @@ import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 // import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:printing/printing.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,9 +18,6 @@ Future<Uint8List> generatePdf(final PdfPageFormat format) async {
     return prefs.getString(key);
   }
 
-  final font =
-      await rootBundle.load('assets/OpenSans-VariableFont_wdth,wght.ttf');
-  final ttf = pw.Font.ttf(font);
 
   final pageTheme = await _myPageTheme(format);
 

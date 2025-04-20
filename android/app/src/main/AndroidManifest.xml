@@ -2,12 +2,10 @@
     <uses-permission android:name="android.permission.CAMERA"/>
     
     <!-- For API 32+, consider requesting permissions dynamically -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32"/>
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
     
     <application
-        android:label="resume_builder"
+        android:label="CV Builder"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         
@@ -38,6 +36,7 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
         </activity>
 
         <!-- Meta-data required for Flutter -->
